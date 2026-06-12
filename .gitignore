@@ -10,3 +10,7 @@ data/.update_lock
 # OS
 Thumbs.db
 .DS_Store
+
+# ƒ[ƒJƒ‹İ’è
+.claude/
+package-lock.json
