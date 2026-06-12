@@ -1,0 +1,12 @@
+# 秘密情報（絶対にコミット・公開しない）
+api_key.txt
+
+# 実行時の一時ファイル・ログ
+*.log
+*.tmp
+__pycache__/
+data/.update_lock
+
+# OS
+Thumbs.db
+.DS_Store

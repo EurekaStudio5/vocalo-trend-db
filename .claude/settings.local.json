@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(python --version)",
+      "PowerShell(node --version)",
+      "PowerShell($env:PYTHONIOENCODING='utf-8'; python -c \"import sys; sys.path.insert\\(0, r'C:\\\\Users\\\\USER\\\\Claudeの遊び場\\\\ボカロデータベース'\\); import update_data as u, json; print\\(json.dumps\\(u.fetch_channel_details\\('UCGmO0S4S-AunjRdmxA6TQYg'\\), ensure_ascii=False\\)\\)\" | Out-File -Encoding utf8 test_out.txt; Get-Content test_out.txt)"
+    ]
+  }
+}

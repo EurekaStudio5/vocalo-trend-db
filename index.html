@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ボカロトレンドDB | 週間・月間・年間ランキング & ボカロP分析</title>
+<meta name="description" content="YouTubeのボカロランキング・トレンド分析・ボカロPデータベース。毎日自動更新。">
+<meta property="og:title" content="ボカロトレンドDB | 週間・月間・年間・全期間ランキング">
+<meta property="og:description" content="いま伸びてるボカロ曲がぜんぶ分かる。トレンド分析・ボカロP名鑑・VocaScore。毎日自動更新。">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "ボカロトレンドDB",
+  "alternateName": "Vocaloid Trend DB",
+  "description": "YouTubeのボカロ週間・月間・年間ランキング、トレンド分析、ボカロPデータベース。毎日自動更新。",
+  "inLanguage": ["ja", "en", "zh", "ko"]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700;900&family=DotGothic16&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=3">
+<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"
+  integrity="sha384-JUh163oCRItcbPme8pYnROHQMC6fNKTBWtRG3I3I0erJkzNgL7uxKlNwcrcFKeqF"
+  crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-inner">
+    <h1 class="logo">
+      <span class="logo-mark">▶</span>
+      <span class="logo-text">ボカロトレンド</span>
+      <span class="logo-db">DB</span>
+    </h1>
+    <nav class="tabs">
+      <button class="tab active" data-tab="ranking" data-i18n="tab.ranking">楽曲ランキング</button>
+      <button class="tab" data-tab="analysis" data-i18n="tab.analysis">トレンド分析</button>
+      <button class="tab" data-tab="pranking" data-i18n="tab.pranking">ボカロPランキング</button>
+      <button class="tab" data-tab="producers" data-i18n="tab.producers">ボカロP名鑑</button>
+      <button class="tab" data-tab="about" data-i18n="tab.about">このサイト</button>
+    </nav>
+    <select id="langSelect" class="lang-select" aria-label="Language">
+      <option value="ja">日本語</option>
+      <option value="en">English</option>
+      <option value="zh">中文</option>
+      <option value="ko">한국어</option>
+    </select>
+    <div class="updated-at" id="updatedAt" data-i18n="loading">読み込み中…</div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track" id="tickerTrack"></div>
+</div>
+
+<main>
+  <!-- ============ 楽曲ランキング ============ -->
+  <section id="tab-ranking" class="tab-panel active">
+    <div class="section-head">
+      <h2 id="rankingTitle"><span class="hl" data-i18n="rank.weekly">週間ボカロランキング</span></h2>
+      <p class="section-desc" data-i18n="rank.desc">期間内に投稿されたボカロオリジナル曲を再生数順に。サムネをタップするとその場で再生できます。Score は登録者数や投稿日の影響をなくした「曲そのものの評価」です（詳しくは「このサイト」へ）。</p>
+      <div class="period-switch" role="tablist">
+        <button class="period-btn active" data-period="weekly" data-i18n="period.weekly">週間</button>
+        <button class="period-btn" data-period="monthly" data-i18n="period.monthly">月間</button>
+        <button class="period-btn" data-period="yearly" data-i18n="period.yearly">年間</button>
+        <button class="period-btn" data-period="alltime" data-i18n="period.alltime">全期間</button>
+      </div>
+      <div class="filter-bar">
+        <select id="vocalFilter">
+          <option value="" data-i18n="filter.allVocals">すべてのボーカル</option>
+        </select>
+        <select id="sortMode">
+          <option value="views" data-i18n="sort.views">再生数順</option>
+          <option value="score" data-i18n="sort.score">スコア順</option>
+          <option value="viewsPerDay" data-i18n="sort.vpd">伸び率順（再生数/日）</option>
+          <option value="newest" data-i18n="sort.newest">新着順</option>
+        </select>
+        <input type="search" id="searchBox" data-i18n-ph="search.ph" placeholder="曲名・ボカロP名でさがす">
+      </div>
+    </div>
+    <ol id="rankingList" class="ranking-list"></ol>
+  </section>
+
+  <!-- ============ トレンド分析 ============ -->
+  <section id="tab-analysis" class="tab-panel">
+    <div class="section-head">
+      <h2><span class="hl" data-i18n="a.title">トレンド分析</span><span class="head-note" data-i18n="a.note">年間データ</span></h2>
+      <p class="section-desc" data-i18n="a.desc">過去1年のランキングから「どんなボカロ曲が伸びやすいか」をデータで見る。バズりたいP向け。</p>
+    </div>
+    <div id="insights" class="insight-cards"></div>
+    <div class="chart-grid">
+      <div class="chart-card">
+        <h3 data-i18n="c.heatmap">伸びる投稿タイミング（曜日×時間帯の平均再生数）</h3>
+        <div id="heatmapBox" class="heatmap"></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.vocalShare">ボーカル人気の推移（四半期シェア）</h3>
+        <div class="chart-box"><canvas id="chartVocalShare"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.chSize">チャンネル規模別ランクイン曲数</h3>
+        <div class="chart-box"><canvas id="chartChSize"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.lenScatter">曲の長さ × 再生数</h3>
+        <div class="chart-box"><canvas id="chartLenScatter"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.titleLen">タイトル文字数別 平均再生数</h3>
+        <div class="chart-box"><canvas id="chartTitleLen"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.likeHist">高評価率の分布</h3>
+        <div class="chart-box"><canvas id="chartLikeHist"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.vocalViews">使用ボーカル別 平均再生数</h3>
+        <div class="chart-box"><canvas id="chartVocalViews"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.vocalScore">使用ボーカル別 平均VocaScore</h3>
+        <div class="chart-box"><canvas id="chartVocalScore"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.month">月別ランクイン曲数（過去1年）</h3>
+        <div class="chart-box"><canvas id="chartMonth"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h3 data-i18n="c.words">タイトル頻出ワード TOP15</h3>
+        <div class="chart-box"><canvas id="chartWords"></canvas></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ボカロPランキング ============ -->
+  <section id="tab-pranking" class="tab-panel">
+    <div class="section-head">
+      <h2><span class="hl" data-i18n="p.title">ボカロPランキング</span></h2>
+      <p class="section-desc" data-i18n="p.desc">多彩な軸でボカロPをランキング。実力派の分析指標から投稿スタイル・曲名の傾向まで。🎲でランダムに出すのも楽しい。</p>
+    </div>
+    <div class="axis-picker">
+      <div class="axis-cats" id="axisCats"></div>
+      <div class="axis-row">
+        <select id="axisSelect"></select>
+        <button id="axisRandom" class="btn-dice" data-i18n="p.random">🎲 ランダム</button>
+      </div>
+      <div class="axis-desc" id="axisDesc"></div>
+    </div>
+    <ol id="pRankList" class="p-rank-list"></ol>
+  </section>
+
+  <!-- ============ ボカロP名鑑 ============ -->
+  <section id="tab-producers" class="tab-panel">
+    <div class="section-head">
+      <h2><span class="hl" data-i18n="pr.title">ボカロP名鑑</span></h2>
+      <p class="section-desc" data-i18n="pr.desc">登録者1万人以上、または500万再生超のヒット曲を持つボカロPのデータベース。毎日の自動更新でどんどん増えていきます。</p>
+      <div class="filter-bar">
+        <select id="producerSort">
+          <option value="subscribers" data-i18n="pr.sort.subs">登録者数順</option>
+          <option value="weeklyViews" data-i18n="pr.sort.weekly">今週の再生数順</option>
+          <option value="name" data-i18n="pr.sort.name">名前順</option>
+        </select>
+        <input type="search" id="producerSearch" data-i18n-ph="pr.search.ph" placeholder="ボカロP名でさがす">
+        <label class="check-label"><input type="checkbox" id="trendingOnly"><span data-i18n="pr.trendingOnly">今週ランクイン中だけ</span></label>
+      </div>
+    </div>
+    <div id="producerGrid" class="producer-grid"></div>
+  </section>
+
+  <!-- ============ About ============ -->
+  <section id="tab-about" class="tab-panel">
+    <div data-lang="ja">
+      <div class="section-head"><h2><span class="hl">このサイトについて</span></h2></div>
+      <div class="about-content">
+        <h3>ボカロトレンドDBとは</h3>
+        <p>YouTube上のボカロ（VOCALOID / SynthV / CeVIO など）オリジナル曲のトレンドを毎日自動で集めて見える化する、非公式のファンサイトです。</p>
+        <h3>こんな人向け</h3>
+        <ul>
+          <li><strong>ボカロが好き</strong> — いま伸びてる新曲をまとめてチェック。サイト上でそのまま聴けます。</li>
+          <li><strong>ボカロPになりたい・バズりたい</strong> — どのボーカル・どんな長さ・どんなタイトルが伸びやすいか、データで分かります。</li>
+        </ul>
+        <h3>データについて</h3>
+        <ul>
+          <li>YouTube上の公開情報を毎日1回自動収集しています。</li>
+          <li>ランキングは「期間内（週間=7日 / 月間=30日 / 年間=1年 / 全期間）に投稿されたボカロ関連オリジナル曲」を再生数順に並べたもの。歌枠・カラオケ配信・歌ってみた・メドレーは除外しています。</li>
+          <li>ボカロP名鑑は「登録者1万人以上」または「500万再生超のボカロ曲を持つ」チャンネルを掲載。YouTube上のランキング・チャンネル検索から日々自動追加されます。</li>
+          <li>再生数・登録者数は一部概数（万単位など）の場合があります。ランキング上位曲は正確な値を取っています。</li>
+        </ul>
+        <h3>VocaScore（曲単体評価スコア）とは</h3>
+        <p>チャンネル登録者数や投稿日時に左右されない「曲そのものの評価」を0〜100で出す独自スコアです。ポイントは、固定の基準ではなく<strong>「同じ条件の曲の期待値と比べてどうか」</strong>で採点していること。すべてのランクイン曲からデータの傾向を毎日学習し、相対評価（パーセンタイル）で点数化します。</p>
+        <ul>
+          <li><strong>好感度（40点）</strong> — 高評価率（高評価数÷再生数）の高さ。ただし高評価率は再生数が伸びるほど自然に下がる傾向がある（ライト層に届くため）ので、<strong>同じ再生数帯の曲の期待値と比べて</strong>高いかどうかで採点します。再生数が多い曲が損をしない設計。</li>
+          <li><strong>拡散力（30点）</strong> — 再生数の大きさ。ただし登録者が多ければ再生数が多いのは当たり前なので、<strong>同じ登録者規模のチャンネルの期待値と比べて</strong>どれだけ上振れているかで採点します。大手も新人も「自分の規模での期待値」と比べるのでフェア。</li>
+          <li><strong>勢い（30点）</strong> — 投稿からの経過時間でならした再生数（再生数÷日数^0.65）。昨日出た曲と半年前の曲をフェアに比べるための補正です。</li>
+        </ul>
+        <p>グレードは S（80+）/ A（65+）/ B（50+）/ C（35+）/ D。Sは「3要素すべてで上位」の曲だけが取れるレアもの。取れなかった指標がある曲は、取れた分だけで100点満点に換算します。Scoreバッジをタップ（PCはカーソルを乗せる）と内訳が見られます。</p>
+        <h3>Pランキングの軸について</h3>
+        <p>「登録者数」のような王道から「曲名のひらがな率」のような変化球まで約80種類。各Pの直近の投稿動画・ランクイン曲・チャンネル情報から自動計算しています。データが足りないPはその軸から除外されます。</p>
+        <h3>更新</h3>
+        <p>毎日1回、自動更新されます。</p>
+        <h3>プライバシーポリシー</h3>
+        <ul>
+          <li>当サイトは、YouTube上で一般公開されている情報（動画の再生数・高評価数・チャンネルの登録者数など）のみを収集・表示しています。個人情報を収集するフォーム等はありません。</li>
+          <li>動画の再生にはYouTubeの埋め込みプレーヤー（プライバシー強化モード youtube-nocookie.com）を使用しています。再生時にはYouTube（Google）のプライバシーポリシーが適用されます。</li>
+          <li>当サイトは今後、アクセス解析ツールや広告配信サービス（Google AdSense等）を利用する場合があります。これらはCookieを使用して利用者の興味に応じた広告を表示することがあります。Cookieは各ブラウザの設定で無効化できます。</li>
+          <li>掲載内容の修正・削除のご要望は、お手数ですが当サイトの運営者までご連絡ください。</li>
+        </ul>
+        <h3>免責事項</h3>
+        <p>掲載データの正確性には努めていますが、YouTubeの仕様変更等により実際の数値と異なる場合があります。当サイトの情報による損害について運営者は責任を負いません。各動画・チャンネルの著作権はそれぞれの権利者に帰属します。</p>
+      </div>
+    </div>
+
+    <div data-lang="en" style="display:none">
+      <div class="section-head"><h2><span class="hl">About this site</span></h2></div>
+      <div class="about-content">
+        <h3>What is Vocalo Trend DB?</h3>
+        <p>An unofficial fan site that automatically collects and visualizes trends of Vocaloid (VOCALOID / SynthV / CeVIO) original songs on YouTube, updated daily.</p>
+        <h3>Who it's for</h3>
+        <ul>
+          <li><strong>Vocaloid fans</strong> — check the songs growing right now, and play them right here.</li>
+          <li><strong>Aspiring producers</strong> — see which vocals, lengths and title styles are trending, backed by data.</li>
+        </ul>
+        <h3>About the data</h3>
+        <ul>
+          <li>Public YouTube data, collected automatically once a day.</li>
+          <li>Rankings list original Vocaloid songs posted within each period (week / month / year / all-time) by views. Karaoke streams, covers and medleys are excluded.</li>
+          <li>The Producer Directory lists channels with 10K+ subscribers or a 5M+ view Vocaloid hit, discovered daily via YouTube rankings and channel search.</li>
+          <li>Some view/subscriber counts are approximate; top-ranked songs use exact figures.</li>
+        </ul>
+        <h3>What is VocaScore?</h3>
+        <p>A 0–100 score that rates <strong>the song itself</strong>, independent of channel size and post date. Instead of fixed thresholds, every song is compared to <strong>the expected value of songs in the same conditions</strong>, learned daily from all ranked songs and scored by percentile.</p>
+        <ul>
+          <li><strong>Likes (40 pts)</strong> — like ratio vs. songs with similar view counts (like ratios naturally drop as views grow, so big songs aren't penalized).</li>
+          <li><strong>Reach (30 pts)</strong> — views vs. the expectation for channels of the same subscriber size. Fair for newcomers and big names alike.</li>
+          <li><strong>Momentum (30 pts)</strong> — views normalized by time since posting (views ÷ days^0.65).</li>
+        </ul>
+        <p>Grades: S (80+) / A (65+) / B (50+) / C (35+) / D. Tap (or hover) a Score badge to see the breakdown.</p>
+        <h3>Producer Ranking axes</h3>
+        <p>About 80 axes, from straightforward (subscribers) to playful (hiragana rate in titles), computed from each producer's recent uploads, ranked songs and channel info.</p>
+      </div>
+    </div>
+
+    <div data-lang="zh" style="display:none">
+      <div class="section-head"><h2><span class="hl">关于本站</span></h2></div>
+      <div class="about-content">
+        <h3>什么是 Vocalo Trend DB？</h3>
+        <p>每日自动收集并可视化 YouTube 上术力口（VOCALOID / SynthV / CeVIO）原创曲趋势的非官方粉丝网站。</p>
+        <h3>适合谁</h3>
+        <ul>
+          <li><strong>术力口爱好者</strong> — 一站式查看当下热门新曲，并可直接播放。</li>
+          <li><strong>想成为P主/想火的人</strong> — 用数据了解哪种歌声、时长、起名方式更容易火。</li>
+        </ul>
+        <h3>关于数据</h3>
+        <ul>
+          <li>每日自动收集一次 YouTube 公开信息。</li>
+          <li>排行榜按播放量排序期间内（周/月/年/全期间）投稿的术力口原创曲，排除翻唱、歌回直播与串烧。</li>
+          <li>P主名鉴收录粉丝1万以上、或拥有500万播放神曲的频道，每日通过YouTube排行与频道搜索自动追加。</li>
+          <li>部分播放量/粉丝数为约数，上榜曲使用精确数值。</li>
+        </ul>
+        <h3>什么是 VocaScore？</h3>
+        <p>排除频道规模与投稿时间影响、为「歌曲本身」打分（0〜100）的独家评分。不用固定标准，而是<strong>与同条件歌曲的期待值比较</strong>，每日从全部上榜曲学习数据倾向，按百分位打分。</p>
+        <ul>
+          <li><strong>好评度（40分）</strong> — 与同播放量级歌曲相比的点赞率高低。</li>
+          <li><strong>扩散力（30分）</strong> — 与同粉丝规模频道的期待值相比的播放量上浮程度。</li>
+          <li><strong>势头（30分）</strong> — 按投稿经过时间归一化的播放量（播放÷天数^0.65）。</li>
+        </ul>
+        <p>等级：S（80+）/ A（65+）/ B（50+）/ C（35+）/ D。点按（或鼠标悬停）Score徽章可查看明细。</p>
+        <h3>关于P主排行的维度</h3>
+        <p>从「粉丝数」到「曲名平假名率」约80种维度，由各P主的近期投稿、上榜曲与频道信息自动计算。</p>
+      </div>
+    </div>
+
+    <div data-lang="ko" style="display:none">
+      <div class="section-head"><h2><span class="hl">사이트 소개</span></h2></div>
+      <div class="about-content">
+        <h3>Vocalo Trend DB란?</h3>
+        <p>YouTube의 보컬로이드(VOCALOID / SynthV / CeVIO) 오리지널 곡 트렌드를 매일 자동 수집·시각화하는 비공식 팬사이트입니다.</p>
+        <h3>이런 분께</h3>
+        <ul>
+          <li><strong>보컬로이드 팬</strong> — 지금 뜨는 신곡을 모아서 체크하고 바로 재생.</li>
+          <li><strong>프로듀서 지망생</strong> — 어떤 보컬·길이·제목이 뜨기 쉬운지 데이터로 확인.</li>
+        </ul>
+        <h3>데이터에 대해</h3>
+        <ul>
+          <li>YouTube 공개 정보를 매일 1회 자동 수집합니다.</li>
+          <li>랭킹은 기간 내(주/월/년/전체) 투고된 보컬로이드 오리지널 곡을 조회수순으로 정렬. 노래방송·커버·메들리는 제외.</li>
+          <li>프로듀서 도감은 구독자 1만 명 이상 또는 500만 조회 히트곡 보유 채널을 수록, YouTube 랭킹·채널 검색으로 매일 자동 추가.</li>
+          <li>일부 수치는 어림값이며, 랭킹 상위 곡은 정확한 값을 사용합니다.</li>
+        </ul>
+        <h3>VocaScore란?</h3>
+        <p>구독자 수·투고일에 좌우되지 않는 「곡 자체의 평가」를 0〜100으로 내는 자체 스코어. 고정 기준이 아니라 <strong>같은 조건의 곡 기대치와 비교</strong>하여, 전체 랭크인 곡에서 매일 경향을 학습해 백분위로 점수화합니다.</p>
+        <ul>
+          <li><strong>호감도(40점)</strong> — 같은 조회수대 곡과 비교한 좋아요율.</li>
+          <li><strong>확산력(30점)</strong> — 같은 구독자 규모 채널의 기대치 대비 조회수 상회 정도.</li>
+          <li><strong>기세(30점)</strong> — 투고 경과 시간으로 보정한 조회수(조회수÷일수^0.65).</li>
+        </ul>
+        <p>등급: S(80+) / A(65+) / B(50+) / C(35+) / D. Score 배지를 탭하면(PC는 마우스 오버) 내역이 보입니다.</p>
+        <h3>프로듀서 랭킹의 축</h3>
+        <p>「구독자 수」 같은 정통파부터 「곡명 히라가나율」 같은 변화구까지 약 80종. 각 프로듀서의 최근 투고·랭크인 곡·채널 정보로 자동 계산합니다.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <span class="footer-logo">▶ ボカロトレンドDB</span> <span data-i18n="footer">— データ出典: YouTube（公開情報） / 非公式ファンサイト</span>
+</footer>
+
+<script src="js/i18n.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
+<script src="js/producer-ranking.js?v=3"></script>
+</body>
+</html>
