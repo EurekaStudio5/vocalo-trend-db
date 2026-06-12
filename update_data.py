@@ -303,7 +303,7 @@ VOCALOID_KEYWORDS = [
     "gumi", "グミ", "flower", "フラワ", "可不", "kafu", "星界", "裏命",
     "重音テト", "テト", "teto", "歌愛ユキ", "ゆかり", "結月", "synthesizer v",
     "synthv", "cevio", "セヴィオ", "知声", "ちせ", "夢ノ結唱", "音街ウナ",
-    "v flower", "ずんだもん", "羽累", "ポエロイド", "utau", "feat.", "【ia】", " ia ",
+    "ずんだもん", "羽累", "ポエロイド", "utau", "feat.", "【ia】", " ia ",
 ] + OVERSEAS_VOCAL_KEYWORDS
 
 MIN_SUBSCRIBERS = 10000
@@ -349,7 +349,7 @@ NON_PRODUCER_IDS = {
 VOCALO_TITLE_KEYWORDS = [
     "初音ミク", "ミク", "miku", "hatsune", "重音テト", "テト", "teto",
     "可不", "kafu", "gumi", "グミ", "鏡音", "リン・レン", "リンレン",
-    "巡音", "ルカ", "luka", "flower", "フラワー", "音街ウナ", "歌愛ユキ",
+    "巡音", "ルカ", "luka", "feat.flower", "feat. flower", "ft.flower", "ft. flower", "/flower", "/ flower", "v flower", "flower】", "【flower", "フラワー", "音街ウナ", "歌愛ユキ",
     "結月ゆかり", "星界", "裏命", "知声", "狐子", "羽累", "夢ノ結唱",
     "ボカロ", "ボーカロイド", "vocaloid", "synthesizer v", "synthv",
     "cevio", "utau", "ずんだもん", "ボカコレ", " ia ", "【ia】",
@@ -392,7 +392,7 @@ def is_cover_video(title, desc):
 VOCAL_NAME_KEYWORDS = [
     "初音ミク", "ミク", "miku", "hatsune", "重音テト", "テト", "teto",
     "可不", "kafu", "gumi", "グミ", "鏡音", "リン・レン", "リンレン",
-    "巡音", "ルカ", "luka", "flower", "フラワー", "音街ウナ", "歌愛ユキ",
+    "巡音", "ルカ", "luka", "feat.flower", "feat. flower", "ft.flower", "ft. flower", "/flower", "/ flower", "v flower", "flower】", "【flower", "フラワー", "音街ウナ", "歌愛ユキ",
     "結月ゆかり", "星界", "裏命", "知声", "狐子", "羽累", "夢ノ結唱",
     "ずんだもん", " ia ", "【ia】",
 ] + OVERSEAS_VOCAL_KEYWORDS
@@ -1408,14 +1408,14 @@ def detect_vocal(title):
         ("可不", ["可不", "kafu"]),
         ("鏡音リン・レン", ["鏡音", "リン", "レン", "rin", "len"]),
         ("GUMI", ["gumi", "グミ"]),
-        ("flower", ["flower", "フラワ"]),
+        ("flower", ["feat.flower", "feat. flower", "ft.flower", "ft. flower", "/flower", "/ flower", "v flower", "flower】", "【flower", "フラワ"]),
         ("巡音ルカ", ["巡音", "ルカ", "luka"]),
         ("歌愛ユキ", ["歌愛ユキ"]),
         ("IA", [" ia ", "【ia】"]),
         ("星界", ["星界"]),
         ("裏命", ["裏命"]),
         ("知声", ["知声"]),
-        ("音街ウナ", ["音街ウナ", "una"]),
+        ("音街ウナ", ["音街ウナ", "otomachi una"]),
         ("SOLARIA", ["solaria"]),
         ("ASTERIAN", ["asterian"]),
         ("Eleanor Forte", ["eleanor forte"]),
