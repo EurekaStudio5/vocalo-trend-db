@@ -5,6 +5,9 @@
 
 (() => {
 
+/* Amazonアソシエイト トラッキングID（CD検索リンクに自動付与） */
+const AMAZON_TAG = "vocaloidtrend-22";
+
 /* ---------- 統計ヘルパー ---------- */
 const mean = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
 const median = (a) => {
@@ -482,7 +485,7 @@ window.openProducerPanel = async function (channelId) {
         <div class="pp-name">${esc(p.name)}</div>
         ${p.handle ? `<div class="pp-handle">${esc(p.handle)}</div>` : ""}
         <a class="pp-yt" href="https://www.youtube.com/channel/${esc(p.channelId)}" target="_blank" rel="noopener noreferrer">${esc(t("pp.open"))}</a>
-        <a class="pp-yt pp-cd" href="https://www.amazon.co.jp/s?k=${encodeURIComponent((p.name || "") + " CD")}" target="_blank" rel="noopener noreferrer">💿 ${esc(t("pp.cd"))}</a>
+        <a class="pp-yt pp-cd" href="https://www.amazon.co.jp/s?k=${encodeURIComponent((p.name || "") + " CD")}&tag=${AMAZON_TAG}" target="_blank" rel="noopener noreferrer sponsored">💿 ${esc(t("pp.cd"))}</a>
       </div>
     </div>
     <div class="pp-stats">
