@@ -342,6 +342,10 @@ NON_PRODUCER_IDS = {
     "UCYEt19P3rd3n3MsjyOOna5A",  # Miree（スペイン語カバー歌手）
     "UCB6pJFaFByws3dQj4AdLdyA",  # Reol Official（歌手）
     "UCFQWd5VxJGAOoWH8F9j81hA",  # rev（UTAUカバー職人・オリジナル曲なし）
+    "UCu-HD6pfH1GqUUe-BWvfhNw",  # Exodus（スラッシュメタルバンド）
+    "UCoQS4Xewa-LIS2E8CBSjkgA",  # Ayase Official（YOASOBIソロ・ボカロ曲なし）
+    "UCOv0dX8-2WKj21xEKYmpr2A",  # Tanjiro Taidana（動画なし）
+    "UCdrPudEZsBLKc-FQ4jUm42A",  # 活動終了（動画なし・終了済み）
 }
 
 # ボカロ曲タイトル判定用キーワード（チャンネル内の非ボカロ動画の識別用。
