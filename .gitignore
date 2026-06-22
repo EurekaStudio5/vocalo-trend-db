@@ -1,11 +1,14 @@
 # 秘密情報（絶対にコミット・公開しない）
 api_key.txt
+x_keys.txt
 
 # 実行時の一時ファイル・ログ
 *.log
 *.tmp
+update_log.txt
 __pycache__/
 data/.update_lock
+_*.py
 
 # OS
 Thumbs.db
