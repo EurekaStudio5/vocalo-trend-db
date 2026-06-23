@@ -346,6 +346,13 @@ NON_PRODUCER_IDS = {
     "UCoQS4Xewa-LIS2E8CBSjkgA",  # Ayase Official（YOASOBIソロ・ボカロ曲なし）
     "UCOv0dX8-2WKj21xEKYmpr2A",  # Tanjiro Taidana（動画なし）
     "UCdrPudEZsBLKc-FQ4jUm42A",  # 活動終了（動画なし・終了済み）
+    "UCUx6VgQeOzb6VOZiv9BV7jQ",  # Flower Toon（ヒンディー語アニメ・非音楽）
+    "UCUJuwFecEXDuFxvP23vjpSg",  # Creuzer（調声師・カバー専門）
+    "UCd_3JEHm1O85i6j2DfesKig",  # akem（UTAUカバー職人・VocaDB全曲Cover）
+    "UCEjXmgcpphuooHVM63DOn2g",  # タドスタジオ（米津等のテトSVカバー専門）
+    "UCpToE5VBKZOPYev0llwFvOw",  # suzie（カバー専門・robot covers）
+    "UCs5MwNR3UURQ3xqb-uuYBMQ",  # ゆうが P（既存曲の和風アレンジのみ）
+    "UCRdKkgI-mTt_3OKqKvs56rA",  # みんなのボカロ考察コメントまとめch（ゆっくり解説）
 }
 
 # ボカロ曲タイトル判定用キーワード（チャンネル内の非ボカロ動画の識別用。
