@@ -365,6 +365,9 @@ NON_PRODUCER_IDS = {
     "UC7ZdjLc8Q9Hst6p3Ofb__3Q",  # atsuover（FNFゲームMOD音楽）
     "UCGteuPMOJgrJ1ZiVmtfqwFA",  # yasai31（調声・カバー専門）
     "UCfGknMeGkrXN3PMINMmen2g",  # とあぴー（食事Vlog・非音楽）
+    "UC2Lt3QQmkL7JsSN_YabaXgw",  # かなで（手描きMAD・ファンアート主体）
+    "UCh9cnvB52S7r4eLblL18DLg",  # 子牛（歌ってみた音源提供・歌い手向け）
+    "UCDlaxPIfGyW8O8ju0t0WAKw",  # 古代ローマが面白い（ゆっくり解説歴史ch）
 }
 
 # ボカロ曲タイトル判定用キーワード（チャンネル内の非ボカロ動画の識別用。
