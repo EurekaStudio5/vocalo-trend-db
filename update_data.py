@@ -353,6 +353,18 @@ NON_PRODUCER_IDS = {
     "UCpToE5VBKZOPYev0llwFvOw",  # suzie（カバー専門・robot covers）
     "UCs5MwNR3UURQ3xqb-uuYBMQ",  # ゆうが P（既存曲の和風アレンジのみ）
     "UCRdKkgI-mTt_3OKqKvs56rA",  # みんなのボカロ考察コメントまとめch（ゆっくり解説）
+    "UCFYMDSW-BzeYZKFSxROw3Rg",  # The Living Tombstone（FNAF系エレクトロ・歌手）
+    "UCUXfRsEIJ9xO1DT7TbEWksw",  # Eve（シンガー・本人歌唱）
+    "UC28z4K16J6mmWt2gohZ5w8w",  # BENJIxScarlett（AI生成ミーム曲）
+    "UCpGk56cJDZcVqIxZatX7nbQ",  # からめる（手描きアニメ作家）
+    "UCl2fdq_CzdrDhauV85aXQDQ",  # Zen - Kun（Nightcoreリミックス）
+    "UCYDDKD_M9zaaoa7gplTPzcQ",  # channel（ミク ミーム/プレイリスト）
+    "UCgP3GbgbuVzAhlctGU5yuPA",  # キタニタツヤ（シンガー・ソロ名義ch）
+    "UCkdhotVDNwu7ZCoe-99AJRQ",  # bb-panzu（FNFゲームMOD）
+    "UCNrdR2m8fxDBNbxJDBFPFNQ",  # 超かぐや姫！公式（映画宣伝ch）
+    "UC7ZdjLc8Q9Hst6p3Ofb__3Q",  # atsuover（FNFゲームMOD音楽）
+    "UCGteuPMOJgrJ1ZiVmtfqwFA",  # yasai31（調声・カバー専門）
+    "UCfGknMeGkrXN3PMINMmen2g",  # とあぴー（食事Vlog・非音楽）
 }
 
 # ボカロ曲タイトル判定用キーワード（チャンネル内の非ボカロ動画の識別用。
