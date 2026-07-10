@@ -12,10 +12,13 @@ echo ==== START %DATE% %TIME% ==== >> update_log.txt
 rem 1) collect fresh data
 "%PY%" update_data.py >> update_log.txt 2>&1
 
+rem 1b) generate static SEO pages (producer/song) and sitemap
+"%PY%" generate_pages.py >> update_log.txt 2>&1
+
 rem 2) publish to GitHub Pages (commit + push the deploy files)
 "%GIT%" rev-parse --is-inside-work-tree >nul 2>&1
 if %errorlevel%==0 (
-  "%GIT%" add data index.html js css robots.txt sitemap.xml README.md >> update_log.txt 2>&1
+  "%GIT%" add data index.html js css robots.txt sitemap.xml README.md p s generate_pages.py >> update_log.txt 2>&1
   "%GIT%" commit -m "daily data update" >> update_log.txt 2>&1
   "%GIT%" push >> update_log.txt 2>&1
 )
