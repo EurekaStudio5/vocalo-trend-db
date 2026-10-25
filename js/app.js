@@ -186,14 +186,14 @@ function renderRanking() {
 
 /* ---------- トレンド分析 ---------- */
 const chartDefaults = {
-  color: "#6f6885",
-  borderColor: "rgba(43,36,64,.12)",
+  color: "#5d5d5d",
+  borderColor: "rgba(20,20,20,.1)",
 };
 
 function makeChart(canvasId, type, labels, data, label, color) {
   // Chart.js は defer 読み込みのため、初回利用時にデフォルトを設定する
   if (!makeChart._init && window.Chart) {
-    Chart.defaults.font.family = '"Zen Maru Gothic", sans-serif';
+    Chart.defaults.font.family = '"Zen Kaku Gothic New", sans-serif';
     Chart.defaults.font.weight = 700;
     makeChart._init = true;
   }
@@ -400,7 +400,7 @@ function renderAnalysis() {
       if (cell.n >= 2) {
         const avg = cell.sum / cell.n;
         const alpha = (0.08 + (avg / maxAvg) * 0.85).toFixed(2);
-        hm += `<div class="hm-cell" style="background:rgba(0,184,169,${alpha})" title="${fmtNum(Math.round(avg))}${tUnit("回")} / ${cell.n}${tUnit("曲")}">${fmtNum(Math.round(avg))}</div>`;
+        hm += `<div class="hm-cell" style="background:rgba(226,35,46,${alpha})${alpha > 0.55 ? ';color:#fff' : ''}" title="${fmtNum(Math.round(avg))}${tUnit("回")} / ${cell.n}${tUnit("曲")}">${fmtNum(Math.round(avg))}</div>`;
       } else {
         hm += `<div class="hm-cell hm-empty">${esc(t("heat.few"))}</div>`;
       }
@@ -419,7 +419,7 @@ function renderAnalysis() {
     const sm = (em - 2 + 12) % 12;
     return `${mName(sm)}${qSep}${mName(em)}`;
   });
-  const SHARE_COLORS = ["#00b8a9", "#ff6fa5", "#e5b800", "#7c6ff0", "#378add", "#b4b2a9"];
+  const SHARE_COLORS = ["#e2232e", "#141414", "#8a8a8a", "#f2959a", "#4a4a4a", "#c8c8c4"];
   const shareKeys = [...topVocalNames, "__other"];
   customChart("#chartVocalShare", 280, {
     type: "bar",
@@ -448,7 +448,7 @@ function renderAnalysis() {
   ];
   const bandCounts = BANDS.map(([lo, hi]) =>
     known.filter((v) => subsBy[v.channelId] >= lo && subsBy[v.channelId] < hi).length);
-  makeChart("#chartChSize", "bar", bandLabels, bandCounts, t("c.songs"), "#ff6fa5");
+  makeChart("#chartChSize", "bar", bandLabels, bandCounts, t("c.songs"), "#e2232e");
 
   // --- ④ 曲の長さ×再生数（散布図・対数軸） ---
   const pts = VIDEOS
@@ -461,7 +461,7 @@ function renderAnalysis() {
     .filter((p) => p.x >= 0.5 && p.x <= 12);
   customChart("#chartLenScatter", 260, {
     type: "scatter",
-    data: { datasets: [{ data: pts, backgroundColor: "#00b8a9aa", pointRadius: 4 }] },
+    data: { datasets: [{ data: pts, backgroundColor: "#e2232eaa", pointRadius: 4 }] },
     options: {
       plugins: { legend: { display: false } },
       scales: {
@@ -480,7 +480,7 @@ function renderAnalysis() {
     const g = VIDEOS.filter((v) => v.title.length >= a && v.title.length <= b);
     return g.length >= 3 ? Math.round(g.reduce((s, v) => s + (v.views || 0), 0) / g.length) : 0;
   });
-  makeChart("#chartTitleLen", "bar", tbLabels, tbData, t("c.avgViews"), "#e5b800");
+  makeChart("#chartTitleLen", "bar", tbLabels, tbData, t("c.avgViews"), "#141414");
 
   // --- ⑥ 高評価率の分布 ---
   const histLabels = [];
@@ -491,11 +491,11 @@ function renderAnalysis() {
   }
   histLabels.push("10%+");
   histData.push(ratios.filter((r) => r >= 10).length);
-  makeChart("#chartLikeHist", "bar", histLabels, histData, t("c.songs"), "#7c6ff0");
+  makeChart("#chartLikeHist", "bar", histLabels, histData, t("c.songs"), "#8a8a8a");
 
   // --- ⑦⑧ ボーカル別 平均再生数 / 平均VocaScore ---
   makeChart("#chartVocalViews", "bar", avgViewsByVocal.map((x) => tVocal(x[0])),
-    avgViewsByVocal.map((x) => x[1]), t("c.avgViews"), "#ff6fa5");
+    avgViewsByVocal.map((x) => x[1]), t("c.avgViews"), "#e2232e");
   const vsAgg = {};
   VIDEOS.forEach((v) => {
     if (v.score == null) return;
@@ -506,7 +506,7 @@ function renderAnalysis() {
     .map(([k, a]) => [k, a.reduce((x, y) => x + y, 0) / a.length])
     .sort((a, b) => b[1] - a[1]);
   makeChart("#chartVocalScore", "bar", vocalScores.map((x) => tVocal(x[0])),
-    vocalScores.map((x) => Math.round(x[1] * 10) / 10), t("c.avgScore"), "#7c6ff0");
+    vocalScores.map((x) => Math.round(x[1] * 10) / 10), t("c.avgScore"), "#8a8a8a");
 
   // --- ⑨ 月別ランクイン曲数 ---
   const monthCounts = Array(12).fill(0);
@@ -521,17 +521,17 @@ function renderAnalysis() {
     monthLabels.push(mName(m));
     monthData.push(monthCounts[m]);
   }
-  makeChart("#chartMonth", "bar", monthLabels, monthData, t("c.songs"), "#e5b800");
+  makeChart("#chartMonth", "bar", monthLabels, monthData, t("c.songs"), "#141414");
 
   // --- ⑩ タイトル頻出ワード ---
   const words = topWords(VIDEOS, 15);
-  makeChart("#chartWords", "bar", words.map((x) => x[0]), words.map((x) => x[1]), t("c.count"), "#7c6ff0");
+  makeChart("#chartWords", "bar", words.map((x) => x[0]), words.map((x) => x[1]), t("c.count"), "#8a8a8a");
 }
 
 /* 縦軸・積み上げ・散布図用の汎用チャートヘルパー */
 function customChart(canvasId, height, config) {
   if (!makeChart._init && window.Chart) {
-    Chart.defaults.font.family = '"Zen Maru Gothic", sans-serif';
+    Chart.defaults.font.family = '"Zen Kaku Gothic New", sans-serif';
     Chart.defaults.font.weight = 700;
     makeChart._init = true;
   }
